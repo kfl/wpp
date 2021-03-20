@@ -2,7 +2,7 @@ structure Example =
 struct
 
 (*
-Small demonstration of how to use Wpp.
+Small demonstration of how to use Wpp and the utilities.
 
 An often occurring challenge is to format if-then-else nicely, so that
 is mainly what we'll demonstrate,
@@ -10,8 +10,9 @@ is mainly what we'll demonstrate,
 
 local
     structure U = Utility
-    open U (* only for the infixes amd $, but I'm lazy and just opens the whole thing *)
-    infix ^^ ^+^ ^/^ == ** ++ --
+    val $ = U.$
+    val ^+^ = U.^+^
+    infix ^+^
 in
 
 datatype Ast = Var  of string
@@ -21,13 +22,13 @@ datatype Ast = Var  of string
 
 fun toDoc ast =
     case ast of
-        Var v => $v
-      | Lit n => Wpp.int n
-      | Opr(x, opr, y)  => U.bin toDoc ($opr) (x, y)
+        Var v                => $v
+      | Lit n                => Wpp.int n
+      | Opr(x, opr, y)       => U.bin toDoc ($opr) (x, y)
       | Cond(test, pos, neg) =>
-        Wpp.group ((U.block 2 ($"if"   ^+^ toDoc test)) ^+^
-                   (U.block 2 ($"then" ^+^ toDoc pos))  ^+^
-                   (U.block 2 ($"else" ^+^ toDoc neg)))
+        Wpp.group (U.sep [ U.block 2 ($"if"   ^+^ toDoc test)
+                         , U.block 2 ($"then" ^+^ toDoc pos)
+                         , U.block 2 ($"else" ^+^ toDoc neg)])
 
 (* AST for `if (x > y) then x+1 else y*z` *)
 val maxEx = Cond(Opr(Var"x", ">", Var"y"),
