@@ -1,0 +1,6 @@
+local
+  $(SML_LIB)/basis/basis.mlb
+  ../wpp.mlb
+in
+  example.sml
+end

@@ -1,0 +1,44 @@
+maxS50:
+if (x > y) then (x + 1) else (y * z)
+
+maxS30:
+if (x > y)
+then (x + 1)
+else (y * z)
+
+maxS10:
+if (x > y)
+then
+  (x + 1)
+else
+  (y * z)
+
+nestS50:
+if (x > y)
+then (x + 1)
+else if (x > y) then (x + 1) else (y * z)
+
+nestS30:
+if (x > y)
+then (x + 1)
+else
+  if (x > y)
+  then (x + 1)
+  else (y * z)
+
+nestS10:
+if (x > y)
+then
+  (x + 1)
+else
+  if
+    (x
+     >
+     y)
+  then
+    (x
+     +
+     1)
+  else
+    (y * z)
+
