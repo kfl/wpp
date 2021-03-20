@@ -1,5 +1,5 @@
 (* A Pretty Printer, based on Philip Wadler's "A prettier printer".
-   But heavily modified to be efficient in a strict language. 
+   But heavily modified to be efficient in a strict language.
    http://cm.bell-labs.com/cm/cs/who/wadler/topics/recent.html
 
    Copyright 1997, 1998, 1999, 2000, 2001 Ken Friis Larsen <ken@friislarsen.net>
@@ -15,17 +15,17 @@ signature  Wpp =
     val break   : int -> int -> doc
     val line    : doc
     val newline : doc  (* force a new line *)
-   
+
     val group  : doc -> doc
     val nest   : int -> doc -> doc
     val text   : string -> doc
     val ^^     : doc * doc -> doc
 
     (* derived functions *)
-    val concat : doc list -> doc 
+    val concat : doc list -> doc
     val seq    : doc -> ('a -> doc) -> 'a list -> doc
 
-    (* Simple converters*)
+    (* Simple converters *)
     val fromConv : ('a -> string) -> 'a -> doc
     val int      : int   -> doc          (* an integer *)
     val char     : char  -> doc          (* an ML character *)
@@ -35,9 +35,8 @@ signature  Wpp =
     val bool     : bool  -> doc          (* a boolean *)
 
 
-    val toString    : int -> doc -> string 
+    val toString    : int -> doc -> string
     val toOutStream : int -> TextIO.outstream -> doc -> unit
     val toFile      : int -> string -> doc -> unit
     val toConsumer  : int -> ('a -> string -> 'a) -> 'a -> doc -> 'a
   end
-

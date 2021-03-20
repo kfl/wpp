@@ -1,5 +1,5 @@
 (* A Pretty Printer, based on Philip Wadler's "A prettier printer".
-   But heavily modified to be efficient in a strict language. 
+   But heavily modified to be efficient in a strict language.
    http://cm.bell-labs.com/cm/cs/who/wadler/topics/recent.html
 
    Copyright 1997, 1998, 1999, 2000, 2001 Ken Friis Larsen <ken@friislarsen.net>
@@ -12,8 +12,8 @@ structure Wpp :> Wpp =
 struct
     infixr 6 ^^
 
-    datatype doc = 
-	NIL
+    datatype doc =
+	      NIL
       | APPEND of doc * doc
       | NEST   of int * doc
       | TEXT   of string
@@ -29,11 +29,11 @@ struct
 
     val empty    = NIL
     fun nest i x = NEST(i,x)
-    val text     = TEXT 
+    val text     = TEXT
     fun break sp off = BREAK(sp, off)
     val line     = BREAK (1,0)
     val newline  = NEWLINE
-    fun group x	 = GROUP x	
+    fun group x	 = GROUP x
 
     (*** Derived functions ***)
     val concat     = List.foldr op^^ empty
@@ -56,22 +56,22 @@ struct
 
     (*** Formating of docs ***)
 
-    val nlsize = String.size "\n" 
+    val nlsize = String.size "\n"
     fun spaces outs s i  = outs s (StringCvt.padLeft #" " i "")
     fun nlspace outs s i = outs s (StringCvt.padRight #" " (i+nlsize) "\n")
 
     local
-	datatype mode = Flat | Break
+	      datatype mode = Flat | Break
 
         fun fitting [] left                       = true
-          | fitting ((i, mode, doc) :: rest) left = 
-            if left >= 0 
-            then case doc of 
+          | fitting ((i, mode, doc) :: rest) left =
+            if left >= 0
+            then case doc of
                      NIL         => fitting rest left
                    | APPEND(x,y) => fitting ((i,mode,x)::(i,mode,y)::rest) left
                    | NEST(j,x)   => fitting ((i+j, mode, x) :: rest) left
                    | TEXT s      => fitting rest (left - String.size s)
-                   | BREAK(sp,_) => (case mode of 
+                   | BREAK(sp,_) => (case mode of
                                          Flat  => fitting rest (left - sp)
                                        | Break => true)
                    | NEWLINE     => true
@@ -84,7 +84,7 @@ struct
        k    : number of chars already used on current line
        i    : indent after linebreaks
     *)
-    fun best w outs s x = 
+    fun best w outs s x =
         let fun be s k [] = s
               | be s k ((i, mode, doc) :: rest) =
                 case doc of
@@ -95,7 +95,7 @@ struct
                                      in  be s (k+String.size str) rest end
                   | NEWLINE       => let val s = nlspace outs s i
                                      in  be s i rest end
-                  | BREAK(sp,off) => 
+                  | BREAK(sp,off) =>
                     (case mode of
                          Flat     => let val s = spaces outs s sp
                                      in  be s (k+sp) rest end
@@ -104,7 +104,7 @@ struct
                   | GROUP x       =>
                     (case mode of
                          Flat     => be s k ((i,Flat,x) :: rest)
-                       | Break    => 
+                       | Break    =>
                          if fitting  ((i,Flat,x)::rest) (w - k)
                          then be s k ((i,Flat,x)::rest)
                          else be s k ((i,Break,x)::rest))
@@ -133,5 +133,3 @@ struct
 
     val toConsumer = best
 end
-
-
