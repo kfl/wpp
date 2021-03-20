@@ -19,7 +19,7 @@ val colon = $":" ^^ ws
 fun x ^+^ y = x ^^ sp ^^ y
 fun x ^/^ y = x ^^ ws ^^ y
 
-fun block i = nest i o group
+fun block i = group o nest i
 val block1 = block 1
 
 fun around left right doc = block1 ((group (left ^^ doc)) ^^ right)
@@ -43,6 +43,32 @@ fun list' sep elem =
 	        | elements (x::xs) = group (elem x ^^ sep) ^^ elements xs
     in  elements
     end
+
+
+(* Five combinators stolen from the Haskell package mainland-pretty
+   by Geoffrey Mainland
+ *)
+
+(* The document `folddoc f ds` obeys the laws:
+
+   * `folddoc f [] = empty`
+   * `folddoc f [d1, d2, ..., dnm1, dn] = d1 `f` (d2 `f` ... (dnm1 `f` dn))`
+*)
+fun folddoc _ []        = empty
+  | folddoc _ [x]       = x
+  | folddoc f (x :: xs) = f (x, folddoc f xs)
+
+
+(* The document `spread ds` concatenates the documents `ds` with `sp`. *)
+val spread = folddoc (op ^+^)
+
+(* The document `stack ds` concatenates the documents `ds` with `newline`. *)
+val stack = folddoc (fn (x,y) => x ^^ newline ^^ y)
+
+(* The document `sep ds` concatenates the documents `ds` with the 'space'
+   document as long as there is room, and uses 'newline' when there isn't. *)
+val sep = group o folddoc (op ^/^)
+
 
 
 (* Example usage of the combinators *)
