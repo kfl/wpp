@@ -25,9 +25,9 @@ fun toDoc ast =
       | Lit n => Wpp.int n
       | Opr(x, opr, y)  => U.bin toDoc ($opr) (x, y)
       | Cond(test, pos, neg) =>
-        Wpp.group ((U.block 2 (text "if"   ^+^ toDoc test)) ^+^
-                   (U.block 2 (text "then" ^+^ toDoc pos))  ^+^
-                   (U.block 2 (text "else" ^+^ toDoc neg)))
+        Wpp.group ((U.block 2 ($"if"   ^+^ toDoc test)) ^+^
+                   (U.block 2 ($"then" ^+^ toDoc pos))  ^+^
+                   (U.block 2 ($"else" ^+^ toDoc neg)))
 
 (* AST for `if (x > y) then x+1 else y*z` *)
 val maxEx = Cond(Opr(Var"x", ">", Var"y"),
