@@ -13,23 +13,18 @@ val comma = $"," ^^ ws
 val semi  = $";" ^^ ws
 val colon = $":" ^^ ws
 
+
+(* Derived reusable combinators *)
 fun x ^+^ y = x ^^ text" " ^^ y
 fun x ^/^ y = x ^^ ws ^^ y
-fun x == y  = x ^^ text" = " ^^ y
-fun x ** y  = x ^^ text" *" ^/^ y
-fun x ++ y  = x ^^ text" +" ^/^ y
-fun x -- y  = x ^^ text" -" ^/^ y
 
-fun around left right doc = left ^^ nest 1 (group(doc ^^ right))
-val paren = around ($"(") ($")")
-val curly = around ($"{") ($"}")
-val brack = around ($"[") ($"]")
+fun block i = nest i o group
+val block1 = block 1
 
-fun bin f opr (x, y) = paren(f x ^+^ opr ^/^ f y)
-fun binnp f opr (x, y) = group(f x ^+^ opr ^/^ f y)
+fun around left right doc = left ^^ (block1 doc) ^^ right
 
-
-fun comp(d1, d2) = d1 ^^ $"; " ^^ d2
+fun opt ppr NONE     = Wpp.empty
+  | opt ppr (SOME x) = ppr x
 
 fun list left right sep elem =
 	  let fun elements [a]    = elem a ^^ right
@@ -47,6 +42,22 @@ fun list' sep elem =
 	        | elements (x::xs) = group (elem x ^^ sep) ^^ elements xs
     in  elements
     end
+
+
+(* Example usage of the combinators *)
+
+fun x == y  = x ^^ text" = " ^^ y
+fun x ** y  = x ^^ text" *" ^/^ y
+fun x ++ y  = x ^^ text" +" ^/^ y
+fun x -- y  = x ^^ text" -" ^/^ y
+
+val paren = around ($"(") ($")")
+val curly = around ($"{") ($"}")
+val brack = around ($"[") ($"]")
+
+fun bin f opr (x, y) = paren(f x ^+^ opr ^/^ f y)
+fun binnp f opr (x, y) = group(f x ^+^ opr ^/^ f y)
+
 
 end
 end
