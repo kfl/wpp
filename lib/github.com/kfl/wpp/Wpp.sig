@@ -8,6 +8,7 @@
    your choice, the licence can be obtained at
    http://www.gnu.org/copyleft/lgpl.html
 *)
+
 signature  Wpp =
   sig
     type doc
@@ -33,7 +34,6 @@ signature  Wpp =
     val word8    : word8 -> doc          (* an ML word constant *)
     val real     : real  -> doc          (* an ML real constant *)
     val bool     : bool  -> doc          (* a boolean *)
-
 
     val toString    : int -> doc -> string
     val toOutStream : int -> TextIO.outstream -> doc -> unit

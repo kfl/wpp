@@ -13,7 +13,7 @@ struct
     infixr 6 ^^
 
     datatype doc =
-	      NIL
+        NIL
       | APPEND of doc * doc
       | NEST   of int * doc
       | TEXT   of string
@@ -21,11 +21,11 @@ struct
       | NEWLINE
       | GROUP  of doc
 
-    fun op^^ p     = case p of
-                       (NIL,NIL) => NIL
-                     | (NIL, y)  => y
-                     | (x, NIL)  => x
-                     | _         => APPEND p
+    fun op^^ p = case p of
+                     (NIL,NIL) => NIL
+                   | (NIL, y)  => y
+                   | (x, NIL)  => x
+                   | _         => APPEND p
 
     val empty    = NIL
     fun nest i x = NEST(i,x)
@@ -33,7 +33,7 @@ struct
     fun break sp off = BREAK(sp, off)
     val line     = BREAK (1,0)
     val newline  = NEWLINE
-    fun group x	 = GROUP x
+    fun group x  = GROUP x
 
     (*** Derived functions ***)
     val concat     = List.foldr op^^ empty
@@ -52,8 +52,6 @@ struct
     val real  = fromConv Real.toString
     fun bool b = if b then text "true" else text "false"
 
-
-
     (*** Formating of docs ***)
 
     val nlsize = String.size "\n"
@@ -61,7 +59,7 @@ struct
     fun nlspace outs s i = outs s (StringCvt.padRight #" " (i+nlsize) "\n")
 
     local
-	      datatype mode = Flat | Break
+        datatype mode = Flat | Break
 
         fun fitting [] left                       = true
           | fitting ((i, mode, doc) :: rest) left =
