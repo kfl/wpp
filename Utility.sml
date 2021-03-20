@@ -1,7 +1,8 @@
 structure Utility =
 struct
 local open Wpp in
-infix ^^ ^+^ ^/^ == ** ++ --
+infixr 6 ^^
+infix ^+^ ^/^ == ** ++ --
 
 (* Some convenience functions for pp *)
 val $     = text
@@ -15,13 +16,13 @@ val colon = $":" ^^ ws
 
 
 (* Derived reusable combinators *)
-fun x ^+^ y = x ^^ text" " ^^ y
+fun x ^+^ y = x ^^ sp ^^ y
 fun x ^/^ y = x ^^ ws ^^ y
 
 fun block i = nest i o group
 val block1 = block 1
 
-fun around left right doc = left ^^ (block1 doc) ^^ right
+fun around left right doc = block1 ((group (left ^^ doc)) ^^ right)
 
 fun opt ppr NONE     = Wpp.empty
   | opt ppr (SOME x) = ppr x
@@ -55,8 +56,8 @@ val paren = around ($"(") ($")")
 val curly = around ($"{") ($"}")
 val brack = around ($"[") ($"]")
 
-fun bin f opr (x, y) = paren(f x ^+^ opr ^/^ f y)
-fun binnp f opr (x, y) = group(f x ^+^ opr ^/^ f y)
+fun bin f opr (x, y) = paren(f x ^+^ opr ^+^ f y)
+fun binnp f opr (x, y) = group(f x ^+^ opr ^+^ f y)
 
 
 end
