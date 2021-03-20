@@ -1,4 +1,4 @@
-# sml-regexp [![CI](https://github.com/kfl/wpl/workflows/CI/badge.svg)](https://github.com/kfl/wpp/actions)
+# wpp [![CI](https://github.com/kfl/wpl/workflows/CI/badge.svg)](https://github.com/kfl/wpp/actions)
 
 A Pretty Printer for Standard ML, based on Philip Wadler's "A prettier
 printer". But heavily modified to be efficient in a strict language.
