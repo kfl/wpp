@@ -45,9 +45,12 @@ fun list' sep elem =
     end
 
 
-(* Five combinators stolen from the Haskell package mainland-pretty
-   by Geoffrey Mainland
- *)
+(* Some combinators from "A Prettier Printer" by Phil Wadler
+   in "The Fun of Programming", Jeremy Gibbons and Oege de Moor (eds)
+
+   Documentation comments adapted from the Haskell package
+   mainland-pretty by Geoffrey Mainland.
+*)
 
 (* The document `folddoc f ds` obeys the laws:
 
