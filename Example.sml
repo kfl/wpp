@@ -40,5 +40,14 @@ val maxS30 = Wpp.toString 30 maxDoc (* equals "if (x > y)\nthen (x + 1)\nelse (y
 val maxS10 = Wpp.toString 10 maxDoc (* equals "if (x > y)\nthen\n  (x + 1)\nelse\n  (y * z)\n" *)
 
 
+val nested = Cond(Opr(Var"x", ">", Var"y"),
+                  Opr(Var"x", "+", Lit 1),
+                  maxEx)
+val nestDoc = toDoc nested
+val nestS50 = Wpp.toString 50 nestDoc
+val nestS30 = Wpp.toString 30 nestDoc
+val nestS10 = Wpp.toString 10 nestDoc
+
+
 end
 end
